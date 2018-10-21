@@ -1,0 +1,3 @@
+(function ($, Terminal) {
+})(jQuery, Terminal);
+
