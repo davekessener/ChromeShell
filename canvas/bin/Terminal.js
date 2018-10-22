@@ -1,105 +1,8 @@
-function bind(self, f) {
-	return function(a) { f.apply(self, arguments); };
-};
-
-
-
-var Cursor = (function ( ) {
-	function Cursor(w, h, f, cb) {
-		this._x = 0;
-		this._y = 0;
-		this._width = w;
-		this._height = h;
-		this._period = f;
-		this._callback = cb;
-		this._active = false;
-
-		tick.call(this);
-	}
-
-	Cursor.prototype.advance = function ( ) {
-		this._x += 1;
-
-		if(this._x == this._width) {
-			this._x = 0;
-			this._y += 1;
-		}
-
-		if(this._y == this._height) {
-			this._y = 0;
-			
-			if(this._callback) {
-				this._callback();
-			}
-		}
-	};
-
-	Cursor.prototype.toggle = function ( ) {
-		this._active = !this._active;
-	};
-
-	Cursor.prototype.x = function ( ) { return this._x; }
-	Cursor.prototype.y = function ( ) { return this._y; }
-	Cursor.prototype.active = function ( ) { return this._active; }
-
-	function tick( ) {
-		this.toggle();
-
-		setTimeout(bind(this, tick), this._period);
-	}
-
-	return Cursor;
-})();
-
-
-var Screen = (function () {
-	function Screen(w, h) {
-		var l = w * h;
-		var b = new ArrayBuffer(l * 2);
-
-		this._width = w;
-		this._height = h;
-		this._buffer = [
-			new Uint8ClampedArray(b, 0, l),
-			new Uint8ClampedArray(b, l, l)
-		];
-		this._active = 0;
-	}
-
-	Screen.prototype.set = function (x, y, c) {
-		this._buffer[this._active][x + y * this._width] = c;
-	};
-
-	Screen.prototype.get = function (x, y) {
-		return this._buffer[this._active][x + y * this._width];
-	};
-
-	Screen.prototype.update = function (cb) {
-		var a = this._buffer[this._active];
-
-		this._active = (this._active + 1) % 2;
-
-		var b = this._buffer[this._active];
-
-		for(var y = 0 ; y < this._height ; y += 1) {
-			for(var x = 0 ; x < this._width ; x += 1) {
-				var i = x + y * this._width;
-
-				if(a[i] != b[i]) {
-					b[i] = a[i];
-
-					if(cb) {
-						cb(a[i], x, y);
-					}
-				}
-			}
-		}
-	};
-
-	return Screen;
-})();
-
-
+/***
+#include bin/utils.js
+#include bin/Cursor.js
+#include bin/Screen.js
+***/
 
 var Terminal = (function () {
 	function Terminal(canvas, size, f) {
@@ -205,15 +108,4 @@ var Terminal = (function () {
 
 	return Terminal;
 })();
-
-
-
-(function ($) {
-	$(function () {
-		var term = new Terminal(document.getElementById("terminal"), 16, 750);
-
-		term.puts("Hello, World!");
-	});
-})(jQuery);
-
 
