@@ -33,20 +33,62 @@ var Terminal = (function () {
 		this._ctx.fillStyle = 'black';
 		this._ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-		tick.call(this);
+		setInterval(bind(this, update), this._period);
 	}
 
+	var kc = {
+		START_TEXT: 2,
+		END_TEXT: 3,
+		END_OF_LINE: 12,
+		CR: 13,
+		LEFT: 17,
+		RIGHT: 18,
+		UP: 19,
+		DOWN: 20,
+		ESCAPE: 27
+	};
+
+	Terminal.KeyCodes = kc;
+
 	Terminal.prototype.put = function (c, i) {
-		this._screen.set(this._cursor.x(), this._cursor.y(), c.charCodeAt(0) + (i ? 128 : 0));
-		this._cursor.advance();
+		if (c < 32) {
+			if (c == 0) {
+			} else if (c == kc.ESCAPE) {
+				console.log('Initiated escape sequence. Not supported!');
+			} else if (c == kc.LEFT) {
+				this._cursor.move(-1, 0);
+			} else if (c == kc.RIGHT) {
+				this._cursor.move(1, 0);
+			} else if (c == kc.UP) {
+				this._cursor.move(0, -1);
+			} else if (c == kc.DOWN) {
+				this._cursor.move(0, 1);
+			} else if (c == kc.START_TEXT) {
+				this._cursor.x(0);
+				this._cursor.y(0);
+			} else if (c == kc.END_TEXT) {
+				this._cursor.x(this._dim.width - 1);
+				this._cursor.y(this._dim.height - 1);
+			} else if (c == kc.CR) {
+				this._cursor.x(0);
+			} else if (c == kc.END_OF_LINE) {
+				this._cursor.x(this._dim.width - 1);
+			}
+		} else {
+			this._screen.set(this._cursor.x(), this._cursor.y(), c + (i ? 128 : 0));
+			this._cursor.advance();
+		}
+
 		this._dirty = true;
 	};
 
 	Terminal.prototype.puts = function (s, h) {
 		for(var i = 0 ; i < s.length ; i += 1) {
-			this.put(s[i], h);
+			this.put(s.charCodeAt(i), h);
 		}
 	};
+
+	Terminal.prototype.cursor = function () { return this._cursor; }
 
 	function update( ) {
 		this._checkedCursor = !this._cursor.active();
@@ -98,12 +140,6 @@ var Terminal = (function () {
 
 	function renderAt(x, y) {
 		renderChar.call(this, this._screen.get(x, y), x, y);
-	}
-
-	function tick( ) {
-		update.call(this);
-
-		setTimeout(bind(this, tick), this._period);
 	}
 
 	return Terminal;

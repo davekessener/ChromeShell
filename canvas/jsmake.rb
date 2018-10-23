@@ -83,6 +83,8 @@ if (fn = Makefile.find)
 
 		mk.include(fn)
 		mk.write("#{target}.js")
+
+		puts "[#{Time.new}]: Created #{target}.js"
 	else
 		puts "garbage"
 	end

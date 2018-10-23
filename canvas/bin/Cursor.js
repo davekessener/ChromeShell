@@ -10,9 +10,9 @@ var Cursor = (function ( ) {
 		this._height = h;
 		this._period = f;
 		this._callback = cb;
-		this._active = false;
+		this._active = true;
 
-		tick.call(this);
+		setInterval(bind(this, this.toggle), this._period);
 	}
 
 	Cursor.prototype.advance = function ( ) {
@@ -36,15 +36,34 @@ var Cursor = (function ( ) {
 		this._active = !this._active;
 	};
 
-	Cursor.prototype.x = function ( ) { return this._x; }
-	Cursor.prototype.y = function ( ) { return this._y; }
-	Cursor.prototype.active = function ( ) { return this._active; }
+	Cursor.prototype.move = function (dx, dy) {
+		this.x(this._x + dx);
+		this.y(this._y + dy);
+	};
 
-	function tick( ) {
-		this.toggle();
+	Cursor.prototype.x = function (x)
+	{
+		var o = this._x;
 
-		setTimeout(bind(this, tick), this._period);
+		if (x !== undefined) {
+			this._x = clamp(Math.floor(x), 0, this._width - 1);
+		}
+
+		return o;
 	}
+
+	Cursor.prototype.y = function (y)
+	{
+		var o = this._y;
+
+		if (y !== undefined) {
+			this._y = clamp(Math.floor(y), 0, this._height - 1);
+		}
+
+		return o;
+	}
+
+	Cursor.prototype.active = function ( ) { return this._active; }
 
 	return Cursor;
 })();
