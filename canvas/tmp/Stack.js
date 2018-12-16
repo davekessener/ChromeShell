@@ -1,4 +1,6 @@
-//#include "bin/utils.js"
+/***
+#include bin/utils.js
+***/
 
 var Stack = (function () {
 	function Buf(n) {
@@ -26,8 +28,8 @@ var Stack = (function () {
 		return this._views[b][this._idx];
 	};
 
-	Buf.prototype.empty = function () { return this._idx == 0; };
-	Buf.prototype.full = function () { return this._idx >= this._cap; };
+	Buf.prototype.empty = function () { return this._idx == 0; }
+	Buf.prototype.full = function () { return this._idx >= this._cap; }
 
 	function Stack (n) {
 		this._cap = (n || 1024);

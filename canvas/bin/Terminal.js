@@ -1,8 +1,6 @@
-/***
-#include bin/utils.js
-#include bin/Cursor.js
-#include bin/Screen.js
-***/
+//#include "bin/utils.js"
+//#include "bin/Cursor.js"
+//#include "bin/Screen.js"
 
 var Terminal = (function () {
 	function Terminal(canvas, size, f) {
@@ -25,7 +23,7 @@ var Terminal = (function () {
 
 		this._cursor = new Cursor(this._dim.width, this._dim.height, f, bind(this, this.scroll));
 		this._screen = new Screen(this._dim.width, this._dim.height);
-		this._last = { drawn: false, x: 0, y: 0 }
+		this._last = { drawn: false, x: 0, y: 0 };
 
 		this._ctx.font = 'bold ' + size + 'px Monospace';
 		this._ctx.textBaseline = 'top';
@@ -88,7 +86,7 @@ var Terminal = (function () {
 		}
 	};
 
-	Terminal.prototype.cursor = function () { return this._cursor; }
+	Terminal.prototype.cursor = function () { return this._cursor; };
 
 	function update( ) {
 		this._checkedCursor = !this._cursor.active();

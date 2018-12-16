@@ -1,7 +1,6 @@
-/*** main
-#include bin/Terminal.js
-#include bin/Core.js
-***/
+//#module main
+//#include "bin/Terminal.js"
+//#include "bin/Core.js"
 
 (function ($) {
 	$(function () {

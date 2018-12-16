@@ -1,6 +1,4 @@
-/***
-#include bin/utils.js
-***/
+//#include "bin/utils.js"
 
 var Cursor = (function ( ) {
 	function Cursor(w, h, f, cb) {
@@ -50,7 +48,7 @@ var Cursor = (function ( ) {
 		}
 
 		return o;
-	}
+	};
 
 	Cursor.prototype.y = function (y)
 	{
@@ -61,9 +59,9 @@ var Cursor = (function ( ) {
 		}
 
 		return o;
-	}
+	};
 
-	Cursor.prototype.active = function ( ) { return this._active; }
+	Cursor.prototype.active = function ( ) { return this._active; };
 
 	return Cursor;
 })();

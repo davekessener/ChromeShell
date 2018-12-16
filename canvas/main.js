@@ -1,3 +1,14 @@
+// JS Module main
+
+
+// BEGIN stub.js
+
+
+// BEGIN bin/Terminal.js
+
+
+// BEGIN bin/utils.js
+
 function bind(self, f) {
 	var a = Array.from(arguments).slice(2);
 	return function () { return f.apply(self, a.concat(Array.from(arguments))); };
@@ -17,6 +28,11 @@ if (!Array.prototype.last) {
 	};
 }
 
+
+// END bin/utils.js
+
+
+// BEGIN bin/Cursor.js
 
 
 var Cursor = (function ( ) {
@@ -67,7 +83,7 @@ var Cursor = (function ( ) {
 		}
 
 		return o;
-	}
+	};
 
 	Cursor.prototype.y = function (y)
 	{
@@ -78,13 +94,18 @@ var Cursor = (function ( ) {
 		}
 
 		return o;
-	}
+	};
 
-	Cursor.prototype.active = function ( ) { return this._active; }
+	Cursor.prototype.active = function ( ) { return this._active; };
 
 	return Cursor;
 })();
 
+
+// END bin/Cursor.js
+
+
+// BEGIN bin/Screen.js
 
 var Screen = (function () {
 	function Screen(w, h) {
@@ -134,6 +155,8 @@ var Screen = (function () {
 })();
 
 
+// END bin/Screen.js
+
 
 var Terminal = (function () {
 	function Terminal(canvas, size, f) {
@@ -156,7 +179,7 @@ var Terminal = (function () {
 
 		this._cursor = new Cursor(this._dim.width, this._dim.height, f, bind(this, this.scroll));
 		this._screen = new Screen(this._dim.width, this._dim.height);
-		this._last = { drawn: false, x: 0, y: 0 }
+		this._last = { drawn: false, x: 0, y: 0 };
 
 		this._ctx.font = 'bold ' + size + 'px Monospace';
 		this._ctx.textBaseline = 'top';
@@ -219,7 +242,7 @@ var Terminal = (function () {
 		}
 	};
 
-	Terminal.prototype.cursor = function () { return this._cursor; }
+	Terminal.prototype.cursor = function () { return this._cursor; };
 
 	function update( ) {
 		this._checkedCursor = !this._cursor.active();
@@ -277,6 +300,14 @@ var Terminal = (function () {
 })();
 
 
+// END bin/Terminal.js
+
+
+// BEGIN bin/Core.js
+
+
+// BEGIN bin/Stack.js
+
 
 var Stack = (function () {
 	function Buf(n) {
@@ -304,8 +335,8 @@ var Stack = (function () {
 		return this._views[b][this._idx];
 	};
 
-	Buf.prototype.empty = function () { return this._idx == 0; }
-	Buf.prototype.full = function () { return this._idx >= this._cap; }
+	Buf.prototype.empty = function () { return this._idx == 0; };
+	Buf.prototype.full = function () { return this._idx >= this._cap; };
 
 	function Stack (n) {
 		this._cap = (n || 1024);
@@ -347,6 +378,11 @@ var Stack = (function () {
 	return Stack;
 })();
 
+
+// END bin/Stack.js
+
+
+// BEGIN bin/Memory.js
 
 var Memory = {};
 
@@ -408,7 +444,7 @@ Memory.Local = (function () {
 
 	View.prototype.view = function (b) {
 		return this._views[b];
-	}
+	};
 
 // # --------------------------------------------------------------------------
 
@@ -488,7 +524,7 @@ Memory.Local = (function () {
 
 	Local.prototype.create = function (r) {
 		return new Empty(r, this);
-	}
+	};
 
 	Local.prototype.allocate = function (n) {
 		var b = this._buf[this._idx];
@@ -514,6 +550,11 @@ Memory.Local = (function () {
 	return Local;
 })();
 
+
+// END bin/Memory.js
+
+
+// BEGIN bin/Instructions.js
 
 var Instructions = (function () {
 	function doCall(a) {
@@ -751,6 +792,8 @@ var Instructions = (function () {
 })();
 
 
+// END bin/Instructions.js
+
 
 var Core = (function () {
 	function Core( ) {
@@ -763,12 +806,12 @@ var Core = (function () {
 
 	var ins = Instructions;
 
-	Core.Instructions = {}
+	Core.Instructions = {};
 	for(var i = 0 ; i < ins.length ; ++i) {
 		Core.Instructions[ins[i].name] = i;
 	}
 
-	Core.prototype.running = function () { return this._running; }
+	Core.prototype.running = function () { return this._running; };
 
 	Core.prototype.tick = function () {
 		if (this._running) {
@@ -798,6 +841,8 @@ var Core = (function () {
 	return Core;
 })();
 
+
+// END bin/Core.js
 
 
 (function ($) {
@@ -876,4 +921,6 @@ var Core = (function () {
 	});
 })(jQuery);
 
+
+// END stub.js
 

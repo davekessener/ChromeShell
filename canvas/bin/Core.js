@@ -1,8 +1,6 @@
-/***
-#include bin/Stack.js
-#include bin/Memory.js
-#include bin/Instructions.js
-***/
+//#include "bin/Stack.js"
+//#include "bin/Memory.js"
+//#include "bin/Instructions.js"
 
 var Core = (function () {
 	function Core( ) {
@@ -15,12 +13,12 @@ var Core = (function () {
 
 	var ins = Instructions;
 
-	Core.Instructions = {}
+	Core.Instructions = {};
 	for(var i = 0 ; i < ins.length ; ++i) {
 		Core.Instructions[ins[i].name] = i;
 	}
 
-	Core.prototype.running = function () { return this._running; }
+	Core.prototype.running = function () { return this._running; };
 
 	Core.prototype.tick = function () {
 		if (this._running) {

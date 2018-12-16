@@ -1,0 +1,19 @@
+{
+	"name" : "Youtube Player",
+	"version" : "1.0",
+	"description" : "Youtube playlist player with additional features",
+	"manifest_version" : 2,
+	"permissions" : [
+		"tabs",
+		"*://*.youtube.com/*"
+	],
+	"browser_action" : {
+		"default_title" : "YT Play",
+		"default_popup" : "popup.html"
+	},
+	"background" : {
+		"page" : "background.html"
+	},
+	"content_security_policy": "script-src 'self' https://*.youtube.com https://*.ytimg.com; object-src 'self'"
+}
+

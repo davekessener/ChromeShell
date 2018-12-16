@@ -58,7 +58,7 @@ Memory.Local = (function () {
 
 	View.prototype.view = function (b) {
 		return this._views[b];
-	}
+	};
 
 // # --------------------------------------------------------------------------
 
@@ -138,7 +138,7 @@ Memory.Local = (function () {
 
 	Local.prototype.create = function (r) {
 		return new Empty(r, this);
-	}
+	};
 
 	Local.prototype.allocate = function (n) {
 		var b = this._buf[this._idx];
